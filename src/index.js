@@ -10,6 +10,8 @@ class Client {
 		this.assertion = "";
 		this.queue = Promise.resolve();
 		this.connection = null;
+		this.spam = this.spam.bind(this);
+		this.report = this.report.bind(this);
 	}
 
 	connect() {
@@ -84,8 +86,14 @@ class Client {
 	speak() {
 		console.log(this.assertion.assertion);
 		this.report(`|/trn very good gxe!,0,${this.assertion.assertion}`.replace(/\n/g, ''));
-		this.report(`|/join Lobby`);
-		this.report(`Lobby|/msg pish, test`);
+		this.report(`|/join lobby`);
+		this.report(`lobby|/msg huhst, test`);
+		this.spam();
+	}
+
+	spam() {
+		this.report(`lobby|/msg huhst, spambot for now...`);
+		setTimeout(this.spam, 1000);
 	}
 
 	report(message) {
