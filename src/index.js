@@ -44,7 +44,9 @@ class Client {
 		if (parts[1] === 'challstr') {
 			this.onChallstr(parts);
 		} else if (parts[1] === 'queryresponse') {
-			this.onQueryResonse(parts);
+			this.onQueryResponse(parts);
+		} else {
+			this.onSomething(parts);
 		}
 		/*else if (parts[1] === 'queryresponse') {
 			this.onQueryresponse(parts);
@@ -53,6 +55,11 @@ class Client {
 		} else if (CHAT.has(parts[1])) {
 			this.onChat(parts);
 		}*/
+	}
+
+	onSomething(parts) {
+		console.log("Something is here");
+		console.log(parts);
 	}
 
 	async onChallstr(parts) {
@@ -79,20 +86,47 @@ class Client {
 		}
 	}
 
-	onQueryresponse(parts) {
+	// this might have many functions
+	// search rooms and try to get into 
+	onQueryResponse(parts) {
+		if (parts[2] == "roomlist") { // this means i'm searching for rooms
+			console.log(parts[3]);
+			let arraygames = Object.entries(JSON.parse(parts[3]).rooms);
+			console.log(arraygames);
+			// do one for now
+			let [somekey, somevalue] = arraygames[0];
+			this.goGame(somekey);
+			// for (const [key, value] of arraygames) {
+			// 	console.log(key);
+			// 	console.log(value);
+			// }
+
+			console.log()
+
+		}
 		console.log(parts);
+	}
+
+	goGame(id) {
+		// enter the game from here
 	}
 
 	speak() {
 		console.log(this.assertion.assertion);
-		this.report(`|/trn very good gxe!,0,${this.assertion.assertion}`.replace(/\n/g, ''));
-		this.report(`|/join lobby`);
-		this.report(`lobby|/msg huhst, test`);
-		this.spam();
+		this.report(`|/trn huhst,0,${this.assertion.assertion}`.replace(/\n/g, ''));
+		// this.report(`|/join lobby`);
+		this.report(`|/pm huhst, new`);
+		// this.spam();
+		this.findGames();
+	}
+
+	findGames() {
+		this.report(`|/cmd roomlist gen8ou,1500,`)
+
 	}
 
 	spam() {
-		this.report(`lobby|/msg huhst, spambot for now...`);
+		this.report(`lobby|/pm huhst, spambot for now...`);
 		setTimeout(this.spam, 1000);
 	}
 
